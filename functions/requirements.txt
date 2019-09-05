@@ -1,0 +1,3 @@
+PyGithub==1.43.8
+aws-sam-cli==0.21.0
+jsonschema==3.0.2

@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app
+
+  Sample SAM Template for sam-app
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  ReleaseEventFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          GITHUB_TOKEN: ""
+          SCHEMA_URL: ""
+      CodeUri: functions/
+      Handler: release.handler
+      Runtime: python3.6
+      Events:
+        ReleaseEvent:
+          Type: Api
+          Properties:
+            Path: /release
+            Method: post
+
+Outputs:
+  ReleaseApi:
+    Description: "API Gateway endpoint URL for Prod stage for Release Event function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/release/"
