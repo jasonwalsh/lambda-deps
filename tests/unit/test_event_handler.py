@@ -1,27 +1,9 @@
-import pytest
-
 from unittest.mock import call, create_autospec, patch
 
 from github.ContentFile import ContentFile
 from jsonschema.exceptions import ValidationError
 
 from functions.release import handler
-
-
-@pytest.fixture
-def schema():
-    return {
-        '$schema': 'http://json-schema.org/draft-07/schema#',
-        'properties': {
-            'repositories': {
-                'items': {
-                    'type': 'string'
-                },
-                'type': 'array'
-            }
-        },
-        'type': 'object'
-    }
 
 
 @patch('functions.release.Github', autospec=True)
@@ -52,7 +34,7 @@ def test_event_handler(validate, requests, b64decode, Client, event, schema):
     response = handler(event, context)
 
     assert Client.call_args == call('secret')
-    assert client.get_repo.call_args == call('octocat/Hello-World')
+    assert client.get_repo.call_args == call('jasonwalsh/deps')
     assert b64decode.call_args == call(
         'eyJyZXBvc2l0b3JpZXMiOiBbIkNvZGVydG9jYXQvSGVsbG8tV29ybGQiXX0K'
     )

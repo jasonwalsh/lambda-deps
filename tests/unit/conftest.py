@@ -14,5 +14,16 @@ def event():
 
 
 @pytest.fixture
-def context():
-    return None
+def schema():
+    return {
+        '$schema': 'http://json-schema.org/draft-07/schema#',
+        'properties': {
+            'repositories': {
+                'items': {
+                    'type': 'string'
+                },
+                'type': 'array'
+            }
+        },
+        'type': 'object'
+    }
