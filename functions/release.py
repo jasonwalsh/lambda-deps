@@ -5,9 +5,10 @@ from base64 import b64decode
 from http import HTTPStatus
 from json import loads
 
+from github import Github
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
-from github import Github
+from loguru import logger
 
 
 def handler(event, context):
@@ -22,7 +23,8 @@ def handler(event, context):
 
     try:
         validate(instance=instance, schema=schema)
-    except ValidationError:
+    except ValidationError as e:
+        logger.error(e)
         return {
             'statusCode': HTTPStatus.BAD_REQUEST
         }

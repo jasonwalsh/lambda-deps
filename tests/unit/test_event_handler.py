@@ -10,8 +10,10 @@ from functions.release import handler
 @patch('functions.release.b64decode')
 @patch('functions.release.requests', autospec=True)
 @patch('functions.release.validate')
+@patch('functions.release.logger', autospec=True)
 @patch.dict('os.environ', {'GITHUB_TOKEN': 'secret'})
-def test_event_handler(validate, requests, b64decode, Client, event, schema):
+def test_event_handler(logger, validate, requests, b64decode, Client, event,
+                       schema):
     context = None
 
     client = Client.return_value
@@ -49,3 +51,4 @@ def test_event_handler(validate, requests, b64decode, Client, event, schema):
     response = handler(event, context)
 
     assert response['statusCode'] == 400
+    assert logger.error.called
